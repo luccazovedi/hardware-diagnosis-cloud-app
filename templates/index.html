@@ -3,28 +3,56 @@
 {% block title %}Diagnóstico de Hardware - Início{% endblock %}
 
 {% block content %}
-<section>
+<section class="panel hero">
+  <h2>⚙️ Diagnóstico inteligente de hardware</h2>
+  <p>
+    Identifique rapidamente possíveis causas para falhas no computador com nosso assistente especialista.
+    Selecione os sintomas, adicione detalhes e receba recomendações acionáveis em segundos.
+  </p>
+  <ul class="highlight-list">
+    <li>✅ Base de conhecimento projetada para ocorrências comuns em desktops e notebooks</li>
+    <li>🚀 Sugestões práticas e priorizadas para resolver problemas com mais agilidade</li>
+    <li>🧠 Visão resumida do hardware do servidor para monitoramento contínuo</li>
+  </ul>
+</section>
+
+<section class="panel" id="formulario">
   <h2>📋 Descreva o problema do computador</h2>
+  <p class="panel-subtitle">Marque os sinais percebidos e compartilhe detalhes adicionais para obter um diagnóstico mais preciso.</p>
   <form action="{{ url_for('diagnosticar') }}" method="post" class="diagnosis-form">
     <fieldset>
       <legend>Sintomas observados</legend>
-      {% for valor, label in sintomas %}
-      <div class="checkbox-item">
-        <label>
-          <input type="checkbox" name="sintomas" value="{{ valor }}" />
-          {{ label }}
+      <div class="checkbox-grid">
+        {% for item in sintomas %}
+        <label class="option-card" for="sintoma-{{ item.value }}">
+          <input
+            type="checkbox"
+            id="sintoma-{{ item.value }}"
+            name="sintomas"
+            value="{{ item.value }}"
+          />
+          <span class="option-card__body">
+            <span class="option-card__icon" aria-hidden="true">{{ item.icon }}</span>
+            <span class="option-card__text">
+              <span class="option-card__title">{{ item.label }}</span>
+              <span class="option-card__hint">{{ item.hint }}</span>
+            </span>
+            <span class="option-card__check" aria-hidden="true">✓</span>
+          </span>
         </label>
+        {% endfor %}
       </div>
-      {% endfor %}
     </fieldset>
 
-    <label for="descricao">Descrição adicional (opcional):</label>
-    <textarea
-      id="descricao"
-      name="descricao"
-      rows="4"
-      placeholder="Descreva com mais detalhes o que está acontecendo..."
-    ></textarea>
+    <div class="input-group">
+      <label for="descricao">Descrição adicional (opcional)</label>
+      <textarea
+        id="descricao"
+        name="descricao"
+        rows="4"
+        placeholder="Compartilhe erros na tela, ruídos ou comportamentos recentes que possam ajudar no diagnóstico."
+      ></textarea>
+    </div>
 
     <button type="submit">Rodar diagnóstico</button>
   </form>

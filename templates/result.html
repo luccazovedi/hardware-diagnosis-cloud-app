@@ -3,88 +3,89 @@
 {% block title %}Resultado do Diagnóstico{% endblock %}
 
 {% block content %}
-<section>
+<section class="panel">
   <h2>🩺 Resultado do diagnóstico</h2>
+  <p class="panel-subtitle">Confira os achados com base nas informações fornecidas e aplique as recomendações sugeridas.</p>
 
-  <h3>Sintomas selecionados:</h3>
-  {% if sintomas %}
-  <ul>
-    {% for s in sintomas %}
-    <li>{{ s }}</li>
-    {% endfor %}
-  </ul>
-  {% else %}
-  <p>Nenhum sintoma foi selecionado.</p>
-  {% endif %}
+  <div class="result-block">
+    <h3>Sintomas selecionados</h3>
+    {% if sintomas %}
+    <ul class="tag-list">
+      {% for s in sintomas %}
+      <li>{{ s }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">Nenhum sintoma foi selecionado.</p>
+    {% endif %}
+  </div>
 
   {% if descricao_extra %}
-  <h3>Descrição adicional:</h3>
-  <p>{{ descricao_extra }}</p>
+  <div class="result-block">
+    <h3>Descrição adicional</h3>
+    <p class="callout">{{ descricao_extra }}</p>
+  </div>
   {% endif %}
 
-  <h3>Possíveis causas e recomendações:</h3>
-  {% for d in diagnosticos %}
-  <div class="card">
-    <p><strong>Diagnóstico:</strong> {{ d.diagnostico }}</p>
-    <p><strong>Causa provável:</strong> {{ d.causa_provavel }}</p>
-    <p><strong>Recomendação:</strong> {{ d.recomendacao }}</p>
+  <div class="result-block">
+    <h3>Possíveis causas e recomendações</h3>
+    <div class="card-grid">
+      {% for d in diagnosticos %}
+      <div class="card">
+        <p><strong>Diagnóstico:</strong> {{ d.diagnostico }}</p>
+        <p><strong>Causa provável:</strong> {{ d.causa_provavel }}</p>
+        <p><strong>Recomendação:</strong> {{ d.recomendacao }}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-  {% endfor %}
 
   <p class="log-status">{{ log_status }}</p>
+<p class="back-link"><a href="{{ url_for('index') }}">🔁 Fazer novo diagnóstico</a></p>
 </section>
 
-<section>
+<section class="panel">
   <h2>📊 Resumo do hardware do servidor</h2>
-
-  <ul>
-    <li><strong>Hostname:</strong> {{ sysinfo.hostname }}</li>
-    <li>
-      <strong>Plataforma:</strong> {{ sysinfo.platform }} {{ sysinfo.platform_release }}
-      ({{ sysinfo.architecture }})
-    </li>
-    <li><strong>Processador:</strong> {{ sysinfo.processor }}</li>
-    <li><strong>CPUs lógicas:</strong> {{ sysinfo.cpu_count }}</li>
-    <li>
-      <strong>Uso de CPU:</strong> {{ sysinfo.cpu_usage_percent }}%
-    </li>
-    <li>
-      <strong>Uso de memória:</strong> {{ sysinfo.memory_usage_percent }}%
-      (Total: {{ sysinfo.total_memory }} bytes)
-    </li>
-    <li><strong>Boot do sistema:</strong> {{ sysinfo.boot_time }}</li>
+  <ul class="info-list">
+    <li><span>Hostname</span><strong>{{ sysinfo.hostname }}</strong></li>
+    <li><span>Plataforma</span><strong>{{ sysinfo.platform }} {{ sysinfo.platform_release }} ({{ sysinfo.architecture }})</strong></li>
+    <li><span>Processador</span><strong>{{ sysinfo.processor }}</strong></li>
+    <li><span>CPUs lógicas</span><strong>{{ sysinfo.cpu_count }}</strong></li>
+    <li><span>Uso de CPU</span><strong>{{ sysinfo.cpu_usage_percent }}%</strong></li>
+    <li><span>Uso de memória</span><strong>{{ sysinfo.memory_usage_percent }}% (Total: {{ sysinfo.total_memory }} bytes)</strong></li>
+    <li><span>Boot do sistema</span><strong>{{ sysinfo.boot_time }}</strong></li>
   </ul>
 </section>
 
-<section>
+<section class="panel">
   <h2>💾 Discos</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Dispositivo</th>
-        <th>Montagem</th>
-        <th>Sistema de arquivos</th>
-        <th>Total (bytes)</th>
-        <th>Usado (bytes)</th>
-        <th>Livre (bytes)</th>
-        <th>Uso %</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for d in sysinfo.disks %}
-      <tr>
-        <td>{{ d.device }}</td>
-        <td>{{ d.mountpoint }}</td>
-        <td>{{ d.fstype }}</td>
-        <td>{{ d.total }}</td>
-        <td>{{ d.used }}</td>
-        <td>{{ d.free }}</td>
-        <td>{{ d.percent }}%</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Dispositivo</th>
+          <th>Montagem</th>
+          <th>Sistema de arquivos</th>
+          <th>Total (bytes)</th>
+          <th>Usado (bytes)</th>
+          <th>Livre (bytes)</th>
+          <th>Uso %</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in sysinfo.disks %}
+        <tr>
+          <td>{{ d.device }}</td>
+          <td>{{ d.mountpoint }}</td>
+          <td>{{ d.fstype }}</td>
+          <td>{{ d.total }}</td>
+          <td>{{ d.used }}</td>
+          <td>{{ d.free }}</td>
+          <td>{{ d.percent }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
-
-<p><a href="{{ url_for('index') }}">🔁 Fazer novo diagnóstico</a></p>
 {% endblock %}

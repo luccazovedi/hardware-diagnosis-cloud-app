@@ -2,23 +2,68 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% set meta_description = meta.description if meta is defined and meta.description else "Receba diagnósticos rápidos para problemas de hardware com sugestões práticas e visão do servidor." %}
+    {% set meta_keywords = meta.keywords if meta is defined and meta.keywords else "diagnostico de hardware, problemas de pc, suporte técnico, monitoramento de servidor" %}
+    {% set meta_author = meta.author if meta is defined and meta.author else "Equipe Diagnóstico de Hardware" %}
+    {% set meta_robots = meta.robots if meta is defined and meta.robots else "index, follow" %}
+    {% set meta_title = meta.og_title if meta is defined and meta.og_title else "Diagnóstico de Hardware" %}
+    {% set meta_og_description = meta.og_description if meta is defined and meta.og_description else meta_description %}
+    {% set meta_og_type = meta.og_type if meta is defined and meta.og_type else "website" %}
+    {% set meta_twitter_card = meta.twitter_card if meta is defined and meta.twitter_card else "summary" %}
+    {% set current_url = meta.og_url if meta is defined and meta.og_url else request.url %}
     <title>{% block title %}Diagnóstico de Hardware{% endblock %}</title>
+    <meta name="description" content="{{ meta_description }}" />
+    <meta name="keywords" content="{{ meta_keywords }}" />
+    <meta name="author" content="{{ meta_author }}" />
+    <meta name="robots" content="{{ meta_robots }}" />
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="canonical" href="{{ current_url }}" />
+    <meta property="og:title" content="{{ meta_title }}" />
+    <meta property="og:description" content="{{ meta_og_description }}" />
+    <meta property="og:type" content="{{ meta_og_type }}" />
+    <meta property="og:url" content="{{ current_url }}" />
+    <meta property="og:locale" content="pt_BR" />
+    {% if meta is defined and meta.og_image %}
+    <meta property="og:image" content="{{ meta.og_image }}" />
+    {% endif %}
+    <meta name="twitter:card" content="{{ meta_twitter_card }}" />
+    <meta name="twitter:title" content="{{ meta_title }}" />
+    <meta name="twitter:description" content="{{ meta_og_description }}" />
+    {% if meta is defined and meta.twitter_site %}
+    <meta name="twitter:site" content="{{ meta.twitter_site }}" />
+    {% endif %}
+    {% if meta is defined and meta.twitter_creator %}
+    <meta name="twitter:creator" content="{{ meta.twitter_creator }}" />
+    {% endif %}
+    {% block extra_head %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
   <body>
-    <header>
-      <h1>💻 Diagnóstico de Hardware</h1>
-      <p class="subtitle">Sistema especialista simples rodando em nuvem</p>
-      <hr />
-    </header>
+    <div class="container">
+      <nav class="navbar" role="navigation" aria-label="principal">
+        <a class="navbar__brand center" href="{{ url_for('index') }}">
+          <span class="navbar__logo" aria-hidden="true">💻</span>
+          <span class="navbar__title">Diagnóstico de Hardware</span>
+        </a>
+      </nav>
 
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+      <header>
+        <h1>Seu parceiro para diagnósticos em nuvem</h1>
+        <p class="subtitle">Sistema especialista simples rodando em nuvem</p>
+      </header>
 
-    <footer>
-      <hr />
-      <p class="footer">Protótipo acadêmico - {{ sysinfo.hostname if sysinfo is defined else '' }}</p>
-    </footer>
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer>
+        <p class="footer">Protótipo acadêmico - Lucca Zovedi</p>
+      </footer>
+    </div>
   </body>
 </html>

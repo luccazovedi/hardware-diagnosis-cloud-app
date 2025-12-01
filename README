@@ -1,0 +1,119 @@
+# 📘 Hardware Diagnosis Cloud App
+> Sistema especialista em diagnóstico de hardware com interface Streamlit e backend Flask, integrado à AWS (EC2 + S3).
+
+## 🧭 Sumário
+1. Visão geral
+2. Recursos principais
+3. Arquitetura em nuvem
+4. Estrutura do projeto
+5. Execução local
+6. Deploy manual na EC2
+7. Logs no S3
+8. Testes realizados
+9. Próximos passos
+10. Autor
+
+## 🔍 Visão geral
+- Diagnósticos baseados em regras (IF/THEN) com recomendações imediatas.
+- Interface web responsiva e painel interativo via Streamlit.
+- Registro de diagnósticos em JSON no Amazon S3 para auditoria.
+
+## 🚀 Recursos principais
+- 🧠 Sistema especialista `HardwareExpertSystem`.
+- 🌐 Front-end Flask (templates Jinja2) + painel Streamlit.
+- ☁️ Execução em EC2 com Gunicorn + systemd.
+- 📊 Métricas de hardware exibidas sob demanda (expander).
+
+## ☁️ Arquitetura em nuvem
+| Serviço | Função |
+| --- | --- |
+| EC2 | Hospeda Flask/Gunicorn e Streamlit (modo manual) |
+| IAM Role | Permissão `AmazonS3FullAccess` para a instância |
+| S3 | Armazena `logs/diagnostico_*.json` |
+| Security Group | Portas liberadas: 22 (SSH), 5000 (app), 80 (HTTP) |
+
+## 🗂 Estrutura do projeto
+```
+hardware-diagnosis-cloud-app/
+├── app.py
+├── expert_system.py
+├── requirements.txt
+├── .env
+├── templates/
+│   ├── layout.html
+│   ├── index.html
+│   └── result.html
+└── static/
+    └── style.css
+```
+
+## 🧪 Execução local
+### Interface Streamlit (recomendada)
+```
+python -m venv venv
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # Linux/macOS
+
+pip install -r requirements.txt
+streamlit run app.py
+```
+- Acessar: http://localhost:8501
+- Resumo de hardware exibido apenas quando solicitado.
+
+### API Flask tradicional
+```
+python -m venv venv
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # Linux/macOS
+
+pip install -r requirements.txt
+python app.py
+```
+- Acessar: http://localhost:5000
+
+## 🌐 Deploy manual na EC2
+1. Criar instância Amazon Linux 2023 (`t2.micro`), anexar role `EC2-S3-Access`.
+2. Instalar dependências:
+   ```
+   sudo dnf update -y
+   sudo dnf install python3 python3-pip git gcc python3-devel -y
+   ```
+3. Clonar repositório, criar venv e instalar requirements.
+4. Configurar `systemd` (`/etc/systemd/system/diagnosis.service`):
+   ```
+   [Unit]
+   Description=Hardware Diagnosis Flask App
+   After=network.target
+
+   [Service]
+   User=ec2-user
+   WorkingDirectory=/home/ec2-user/hardware-diagnosis-cloud-app
+   Environment="PATH=/home/ec2-user/hardware-diagnosis-cloud-app/venv/bin"
+   ExecStart=/home/ec2-user/hardware-diagnosis-cloud-app/venv/bin/gunicorn -w 3 -b 0.0.0.0:5000 app:app
+   Restart=always
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+5. Ativar serviço:
+   ```
+   sudo systemctl daemon-reload
+   sudo systemctl enable diagnosis
+   sudo systemctl start diagnosis
+   sudo systemctl status diagnosis
+   ```
+
+## 🪣 Logs no S3
+- Bucket: `artificial-inteligence-diagnosis-zovedi`
+- Caminho: `logs/diagnostico_YYYYMMDDTHHMMSSZ.json`
+- Payload inclui sintomas, diagnósticos, resumo de hardware e timestamp.
+
+## ✅ Testes realizados
+- `curl localhost:5000` (interno) e `curl http://<IP>:5000` (externo).
+- Submissão de formulário HTML e painel Streamlit.
+- Escrita de logs no S3 e verificação via AWS Console.
+- Monitoramento `systemctl status diagnosis`.
+
+## 👤 Autor
+Lucca Zovedi  
+_(Informações de curso/professor/universidade podem ser adicionadas sob demanda.)_
