@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Diagnóstico de Hardware{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>💻 Diagnóstico de Hardware</h1>
+      <p class="subtitle">Sistema especialista simples rodando em nuvem</p>
+      <hr />
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <hr />
+      <p class="footer">Protótipo acadêmico - {{ sysinfo.hostname if sysinfo is defined else '' }}</p>
+    </footer>
+  </body>
+</html>

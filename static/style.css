@@ -1,0 +1,91 @@
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 960px;
+  background: #f7f7f7;
+  color: #333;
+}
+
+header h1 {
+  margin-bottom: 0;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: #666;
+}
+
+h2 {
+  margin-top: 24px;
+}
+
+.diagnosis-form {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.checkbox-item {
+  margin-bottom: 6px;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 6px;
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.card {
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 4px solid #2563eb;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #e5e7eb;
+}
+
+.footer {
+  font-size: 12px;
+  color: #777;
+}
+
+.log-status {
+  font-size: 13px;
+  color: #555;
+  margin-top: 8px;
+}

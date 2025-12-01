@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}Diagnóstico de Hardware - Início{% endblock %}
+
+{% block content %}
+<section>
+  <h2>📋 Descreva o problema do computador</h2>
+  <form action="{{ url_for('diagnosticar') }}" method="post" class="diagnosis-form">
+    <fieldset>
+      <legend>Sintomas observados</legend>
+      {% for valor, label in sintomas %}
+      <div class="checkbox-item">
+        <label>
+          <input type="checkbox" name="sintomas" value="{{ valor }}" />
+          {{ label }}
+        </label>
+      </div>
+      {% endfor %}
+    </fieldset>
+
+    <label for="descricao">Descrição adicional (opcional):</label>
+    <textarea
+      id="descricao"
+      name="descricao"
+      rows="4"
+      placeholder="Descreva com mais detalhes o que está acontecendo..."
+    ></textarea>
+
+    <button type="submit">Rodar diagnóstico</button>
+  </form>
+</section>
+{% endblock %}
